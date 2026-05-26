@@ -16,7 +16,7 @@ const user = JSON.parse(localStorage.getItem('user'));
       }}>
         
           <div>
-           <Link to='/' style={{color:'white', fontSize:'1.5rem', fontWeight:'bold'}}>
+           <Link  to='/' style={{color:'white', fontSize:'1.5rem', fontWeight:'bold', textDecoration:'none'}}>
            RentNepal
            </Link>
           </div>
