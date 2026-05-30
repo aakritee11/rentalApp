@@ -1,10 +1,13 @@
 import { useState } from "react";
-import {Link, useNavigate } from "react-router-dom"
-import '../styles/Register.css'
+import {Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
+import '../styles/Register.css';
+import axios from "axios";
 
 
 export default function Login (){
     const navigate = useNavigate();
+    const {login} = useAuth();
 
     const [formData, setFormData] = useState({
          email: '',
@@ -21,10 +24,13 @@ export default function Login (){
       e.preventDefault();
       try{
        const response= await axios.post('http://localhost:5000/api/auth/login', formData)
-       localStorage.setItem('token', response.data.token);
-       localStorage.setItem('user', JSON.stringify(response.data.user));
-       navigate('/');
+      //  console.log(response.data.token);
+       const data = await response.data;
 
+       if(data.token){
+        login(data.user, data.token);
+        navigate('/');
+       }
       }catch(e){
         console.log(e);
       }

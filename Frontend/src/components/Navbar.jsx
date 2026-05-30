@@ -1,9 +1,15 @@
-import {Link} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Navbar(){
-const token= localStorage.getItem('token');
-const user = JSON.parse(localStorage.getItem('user'));
+  const {token, user, logout} = useAuth();
+  const navigate = useNavigate();
 
+
+const handleLogout = ()=>{
+  logout();
+  navigate('/');
+}
 
     return(
       <nav style={{
@@ -27,14 +33,18 @@ const user = JSON.parse(localStorage.getItem('user'));
              {token ? (
           // logged in
           <>
+        
             {user?.role === 'owner' && (
               <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none' }}>Dashboard</Link>
             )}
+
             <span style={{ color: 'white', cursor: 'pointer' }} onClick={() => {
-              localStorage.removeItem('token');
-              localStorage.removeItem('user');
-              window.location.href = '/';
+              logout();
+              navigate('/');
             }}>Logout</span>
+            
+            <Link style={{ color: 'white', textDecoration: 'none' }}>Profile</Link> 
+
           </>
         ) : (
           // not logged in

@@ -19,9 +19,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
       </Routes>
       <div>
-        <h2>
-          RentalApp
-        </h2>
+        
       </div>
     </>
   )
