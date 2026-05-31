@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import { Routes, Route } from 'react-router-dom'
+import RoomDetail from './pages/RoomDetail'
 
 function App() {
   
@@ -17,6 +18,7 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login/>}/>
+        <Route path='/rooms/:id' element={<RoomDetail/>}/>
       </Routes>
       <div>
         
