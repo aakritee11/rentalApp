@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import RoomCard from "../components/RoomCard";
 import '../styles/Home.css';
+import ClearIcon from '@mui/icons-material/Clear';
 
 export default function Home(){
 
@@ -43,13 +44,26 @@ export default function Home(){
     return(
          <div className="home-container">
       <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search by city..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="search-input"
-        />
+<div className="search-input-wrapper">
+  <input
+    type="text"
+    placeholder="Search by city..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="search-input"
+  />
+  {search && (
+    <button 
+      className="clear-icon-btn"
+      onClick={() => setSearch('')}
+      type="button"
+    >
+      <ClearIcon sx={{ fontSize: 20 }} />
+    </button>
+  )}
+</div>
+        
+
         <select value={type} onChange={(e) => setType(e.target.value)} className="search-select">
           <option value="">All Types</option>
           <option value="single">Single</option>
