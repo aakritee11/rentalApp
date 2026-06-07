@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import '../styles/Dashboard.css';
@@ -14,6 +14,9 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
+  const [photoPreviews, setPhotoPreviews] = useState([]);
+  const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -73,6 +76,7 @@ export default function Dashboard() {
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong');
     }
+    setPhotoPreviews([]);
   };
 
   const handleDelete = async (roomId) => {
@@ -87,6 +91,43 @@ export default function Dashboard() {
       setError(err.response?.data?.message || 'Something went wrong');
     }
   };
+
+  const handlePhotoChange = async (e) => {
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
+
+  const previews = files.map(file => URL.createObjectURL(file));
+  setPhotoPreviews(prev => [...prev, ...previews]);
+
+  setUploadingPhotos(true);
+  try {
+    const uploadedUrls = [];
+    for (const file of files) {
+      const data = new FormData();
+      data.append('photo', file);
+      const res = await axios.post('http://localhost:5000/api/upload', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      uploadedUrls.push(res.data.url);
+    }
+    setFormData(prev => ({ ...prev, photos: [...prev.photos, ...uploadedUrls] }));
+  } catch (err) {
+    setError('Photo upload failed. Please try again.');
+  } finally {
+    setUploadingPhotos(false);
+  }
+};
+
+const removePhoto = (index) => {
+  setPhotoPreviews(prev => prev.filter((_, i) => i !== index));
+  setFormData(prev => ({
+    ...prev,
+    photos: prev.photos.filter((_, i) => i !== index)
+  }));
+};
 
   return (
     <div className="dashboard-container">
@@ -139,9 +180,43 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <button type="submit" className="btn">Post Room</button>
+          {/* <button type="submit" className="btn">Post Room</button> */}
         </form>
       </div>
+
+<div className="form-group">
+  
+  <div className="photo-dropzone" onClick={() => fileInputRef.current.click()}>
+    <span className="photo-dropzone-icon">📷</span>
+    <span>Click to upload photos</span>
+    <small>JPG, PNG, WEBP — multiple allowed</small>
+  </div>
+  <input
+    ref={fileInputRef}
+    type="file"
+    accept="image/*"
+    multiple
+    style={{ display: 'none' }}
+    onChange={handlePhotoChange}
+  />
+  {uploadingPhotos && <p className="uploading-text">Uploading photos...</p>}
+
+  {photoPreviews.length > 0 && (
+    <div className="photo-preview-grid">
+      {photoPreviews.map((src, i) => (
+        <div key={i} className="photo-preview-item">
+          <img src={src} alt={`preview ${i + 1}`} />
+          <button type="button" className="photo-remove-btn" onClick={() => removePhoto(i)}>✕</button>
+        </div>
+      ))}
+    </div>
+  )}
+
+<button type="submit" className="btn" disabled={uploadingPhotos}>
+  {uploadingPhotos ? 'Uploading...' : 'Post Room'}
+</button>
+
+</div>
 
       {/* my rooms list */}
       <div className="my-rooms">
@@ -156,6 +231,13 @@ export default function Dashboard() {
               <div className="my-room-info">
                 <h4>{room.title}</h4>
                 <p>{room.city} — {room.type} — Rs. {room.price}/month</p>
+                {room.photos?.length > 0 && (
+  <img src={room.photos[0]} alt={room.title} className="my-room-thumbnail" />
+)}
+...
+{room.photos?.length > 0 && (
+  <small>{room.photos.length} photo{room.photos.length > 1 ? 's' : ''}</small>
+)}
               </div>
               <div className="my-room-actions">
                 <button
