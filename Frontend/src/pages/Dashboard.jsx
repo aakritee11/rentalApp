@@ -180,10 +180,6 @@ const removePhoto = (index) => {
             </div>
           </div>
 
-          {/* <button type="submit" className="btn">Post Room</button> */}
-        </form>
-      </div>
-
 <div className="form-group">
   
   <div className="photo-dropzone" onClick={() => fileInputRef.current.click()}>
@@ -217,6 +213,10 @@ const removePhoto = (index) => {
 </button>
 
 </div>
+         
+        </form>
+      </div>
+
 
       {/* my rooms list */}
       <div className="my-rooms">
