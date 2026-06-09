@@ -14,7 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json({limit: '10mb'}));
 app.use(express.urlencoded({extended: true, limit:'10mb'}));
-app.use('/api/upload', uploadRoute);
+
 
 
 app.set("port", (5000));
@@ -22,7 +22,7 @@ app.set("port", (5000));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/rooms', roomRoutes);
-app.use('/uploads', express.static('uploads'));
+app.use('/api/upload', uploadRoute);
 
 app.get("/",(req,res)=>{
   res.json({message: "Backend is running!"}) 

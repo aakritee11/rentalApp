@@ -1,15 +1,17 @@
 import multer from "multer";
 import path from"path";
+import cloudinary from "../config/cloudinary.js";
+import {CloudinaryStorage} from "multer-storage-cloudinary";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'rental-listings',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
   },
-  filename: (req, file, cb) => {
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, unique + path.extname(file.originalname));
-  }
 });
+
+
 
 const upload = multer({
   storage,
@@ -22,3 +24,4 @@ const upload = multer({
 });
 
 export  {upload};
+
