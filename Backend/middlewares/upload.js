@@ -1,7 +1,10 @@
 import multer from "multer";
+import dotenv from "dotenv";
+dotenv.config();
 import path from"path";
 import cloudinary from "../config/cloudinary.js";
 import {CloudinaryStorage} from "multer-storage-cloudinary";
+
 
 const storage = new CloudinaryStorage({
   cloudinary,
