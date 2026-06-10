@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import '../styles/Dashboard.css';
+import { deleteRoom } from "../services/roomServices";
 
 
 
@@ -82,9 +83,7 @@ export default function Dashboard() {
   const handleDelete = async (roomId) => {
     if (!window.confirm('Are you sure you want to delete this room?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/rooms/${roomId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await deleteRoom(roomId, token);
       setSuccess('Room deleted successfully!');
       fetchMyRooms();
     } catch (err) {
