@@ -1,6 +1,7 @@
 import { useEffect ,  useState} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Footer from "../components/Footer";
 import RoomCard from "../components/RoomCard";
 import '../styles/Home.css';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -89,6 +90,7 @@ export default function Home(){
           ))}
         </div>
       )}
+      <Footer/>
     </div>
     )
 }
