@@ -124,6 +124,8 @@
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 0.5rem;
 }
 
 .btn-edit, .btn-delete {
@@ -335,6 +337,9 @@
 
   .owner-actions {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
   }
 
   .btn-edit, .btn-delete {

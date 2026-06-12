@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import '../styles/Dashboard.css';
 import { deleteRoom } from "../services/roomServices";
@@ -10,6 +10,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('token');
+  const location = useLocation();
+  const roomId = location.state?.roomId;
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,6 +20,18 @@ export default function Dashboard() {
   const [uploadingPhotos, setUploadingPhotos] = useState(false);
   const [photoPreviews, setPhotoPreviews] = useState([]);
   const fileInputRef = useRef(null);
+   const [room, setRoom] = useState(null);
+   const [showEditModal, setShowEditModal] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    title: '',
+  description: '',
+  price: '',
+  city: '',
+  type: 'single',
+  contactPhone: '',
+  photos: []
+  });
+  const [editLoading, setEditLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -49,6 +63,16 @@ export default function Dashboard() {
       console.log(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchRoomData = async (roomId)=>{
+    try{
+      const {data} = await axios.get(`http://localhost:5000/api/rooms/${roomId}`);
+      setRoom(data);
+    }
+    catch (err){
+      setError('Failed to fetch room');
     }
   };
 
@@ -128,6 +152,45 @@ const removePhoto = (index) => {
   }));
 };
 
+useEffect(() => {
+  if (roomId) {
+    setShowEditModal(true);
+    fetchRoomData(roomId);
+  }
+}, [roomId]);
+
+useEffect(() => {
+  if (room) {
+    setEditFormData(room); // pre-fill
+  }
+}, [room]);
+
+    const handleEditChange = (e) => {
+    setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
+  };
+ 
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    setEditLoading(true);
+    try {
+      await axios.put(`http://localhost:5000/api/rooms/${roomId}`, editFormData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSuccess('Room updated successfully!');
+      setError('');
+      setShowEditModal(false);
+      setTimeout(()=>{
+       navigate('/');
+      },500)
+    
+    } catch (err) {
+      setError(err.response?.data?.message || 'failed to update');
+      console.log(err);
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
   return (
     <div className="dashboard-container">
       <h2>Owner Dashboard</h2>
@@ -137,7 +200,8 @@ const removePhoto = (index) => {
       {success && <p className="success">{success}</p>}
 
       {/* post room form */}
-      <div className="dashboard-form">
+      {!roomId ?(
+        <div className="dashboard-form">
         <h3>Post a New Room</h3>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -212,11 +276,68 @@ const removePhoto = (index) => {
 </button>
 
 </div>
-         
-        </form>
-      </div>
+</form> 
+</div>)
+      :(
+           
+  <div className="edit-modal">
+    <div className="modal-content">
+      <h3>Edit Room</h3>
+      <form onSubmit={handleEditSubmit}>
+        <div className="form-group">
+          <label>Title</label>
+          <input 
+            type="text" 
+            name="title" 
+            value={editFormData.title || ''} 
+            onChange={handleEditChange} 
+            required 
+          />
+        </div>
+              <div className="form-group">
+            <label>Description</label>
+            <textarea name="description" value={editFormData.description} onChange={handleEditChange} required rows="4" />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>Price (Rs/month)</label>
+              <input type="number" name="price" value={editFormData.price} onChange={handleEditChange} required />
+            </div>
+
+            <div className="form-group">
+              <label>City</label>
+              <input type="text" name="city" value={editFormData.city} onChange={handleEditChange} required />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>Type</label>
+              <select name="type" value={editFormData.type} onChange={handleEditChange}>
+                <option value="single">Single</option>
+                <option value="shared">Shared</option>
+                <option value="apartment">Apartment</option>
+                <option value="studio">Studio</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Contact Phone</label>
+              <input type="text" name="contactPhone" value={editFormData.contactPhone} onChange={handleEditChange} />
+            </div>
+          </div>
 
 
+
+        <button type="submit" disabled={editLoading}>
+          {editLoading ? 'Saving...' : 'Save Changes'}
+        </button>
+        <button type="button" onClick={() => setShowEditModal(false)}>Cancel</button>
+      </form>
+    </div>
+  </div>)}
+ 
       {/* my rooms list */}
       <div className="my-rooms">
         <h3>My Rooms</h3>

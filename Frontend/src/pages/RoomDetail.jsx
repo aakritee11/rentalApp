@@ -11,9 +11,7 @@ function RoomDetail() {
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState('');
-  const [showEditModal, setShowEditModal] = useState(false);
   const [editFormData, setEditFormData] = useState({});
-  const [editLoading, setEditLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   const user = JSON.parse(localStorage.getItem('user'));
@@ -50,28 +48,11 @@ function RoomDetail() {
     }
   };
 
-    const handleEditChange = (e) => {
-    setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
-  };
  
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-    setEditLoading(true);
-    try {
-      await axios.put(`http://localhost:5000/api/rooms/${id}`, editFormData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setSuccess('Room updated successfully!');
-      setError('');
-      setShowEditModal(false);
-      fetchRoom();
-    } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update room');
-    } finally {
-      setEditLoading(false);
-    }
-  };
 
+  const handleEdit =()=>{
+    navigate('/dashboard' , {state: {roomId: id}})
+  }
    const handleDelete = async () => {
   if (!window.confirm("Delete this room?")) return;
 
@@ -86,6 +67,7 @@ function RoomDetail() {
 
   if (loading) return <p className="loading">Loading...</p>;
   if (!room) return <p className="loading">Room not found</p>;
+
 
   return (
     <div className="detail-container">
@@ -112,7 +94,7 @@ function RoomDetail() {
            {/* Only for owner */}
          {isOwner && (
             <div className="owner-actions">
-              <button className="btn-edit" onClick={() => setShowEditModal(true)}>
+              <button className="btn-edit" onClick={handleEdit}>
                 ✏️ Edit
               </button>
               <button className="btn-delete" onClick={handleDelete}>
