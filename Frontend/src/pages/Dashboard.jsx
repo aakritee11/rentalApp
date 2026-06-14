@@ -136,8 +136,17 @@ export default function Dashboard() {
       });
       uploadedUrls.push(res.data.url);
     }
+    if (roomId) {
+      // Edit mode
+      setEditFormData(prev => ({ 
+        ...prev, 
+        photos: [...(prev.photos || []), ...uploadedUrls] 
+      }));
+    }else{
     setFormData(prev => ({ ...prev, photos: [...prev.photos, ...uploadedUrls] }));
-  } catch (err) {
+  }
+setPhotoPreviews([]);
+} catch (err) {
     setError('Photo upload failed. Please try again.');
   } finally {
     setUploadingPhotos(false);
@@ -328,6 +337,64 @@ useEffect(() => {
             </div>
           </div>
 
+<div className="form-group">
+  <label>Photos</label>
+  
+  {/* Show existing + new photos */}
+  {(editFormData.photos?.length > 0 || photoPreviews.length > 0) && (
+    <div className="photo-preview-grid">
+      <p className="photo-label">Photos:</p>
+      
+      {/* Existing photos from DB */}
+      {editFormData.photos?.map((photo, i) => (
+        <div key={`existing-${i}`} className="photo-preview-item">
+          <img src={photo} alt={`room ${i + 1}`} />
+          <button 
+            type="button" 
+            className="photo-remove-btn" 
+            onClick={() => {
+              setEditFormData(prev => ({
+                ...prev,
+                photos: prev.photos.filter((_, idx) => idx !== i)
+              }));
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+      
+      {/* New uploaded photos (previews) */}
+      {photoPreviews.map((src, i) => (
+        <div key={`preview-${i}`} className="photo-preview-item">
+          <img src={src} alt={`preview ${i + 1}`} />
+          <button 
+            type="button" 
+            className="photo-remove-btn" 
+            onClick={() => setPhotoPreviews(prev => prev.filter((_, idx) => idx !== i))}
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {/* Upload new */}
+  <div className="photo-dropzone" onClick={() => fileInputRef.current.click()}>
+    <span className="photo-dropzone-icon">📷</span>
+    <span>Click to add more photos</span>
+  </div>
+  <input
+    ref={fileInputRef}
+    type="file"
+    accept="image/*"
+    multiple
+    style={{ display: 'none' }}
+    onChange={handlePhotoChange}
+  />
+  {uploadingPhotos && <p className="uploading-text">Uploading photos...</p>}
+</div>
 
 
         <button type="submit" disabled={editLoading}>
