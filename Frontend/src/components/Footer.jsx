@@ -3,6 +3,11 @@ import "../styles/Footer.css";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const toTop = ()=>{
+    window.scrollTo({top: 0,
+      behavior: "smooth"
+    })
+  }
 
   return (
     <footer style={{
@@ -13,10 +18,11 @@ export default function Footer() {
     
     }}>
       <div className="footer-container">
-        
+       
+        <p className="btn-to-top" onClick={toTop}>Back to top⬆️</p>
         <div className="footer-section">
           <h3>RentNepal</h3>
-          <p>Find your perfect rental property</p>
+          <p>Find your perfect rental property!</p>
         </div>
 
         <div className="footer-section">
