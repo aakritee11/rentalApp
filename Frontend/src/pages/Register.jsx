@@ -14,6 +14,19 @@ const [formData, SetFormData] = useState({
 });
 const [error, setError] = useState('');
 
+const isValidName = (name) => {
+    const regex = /^[a-zA-Z\s]+$/;
+    return regex.test(name) && name.trim().length >= 2;
+};
+
+ const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Additional check: TLD must be at least 2 chars
+    const parts = email.split('.');
+    const hasValidTLD = parts[parts.length - 1].length >= 2;
+    return regex.test(email) && hasValidTLD;
+  };
+
 const handleChange = (e) =>{
     SetFormData({...formData, [e.target.name]: e.target.value});
 
@@ -21,6 +34,16 @@ const handleChange = (e) =>{
 
 const handleSubmit = async(e)=>{
     e.preventDefault();
+     if (!isValidEmail(formData.email)) {
+      setError('Please enter a valid email');
+      return;
+    }
+
+    if(!isValidName(formData.name)){
+      setError('Name cannot bet symbols or numbers!');
+      return;
+    }
+
     try{
          await axios.post('http://localhost:5000/api/auth/register',formData);
          navigate('/login');
