@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+Backend/.env
+Backend/uploads
+# OS files
+Thumbs.db
+
+# Logs
+*.log
