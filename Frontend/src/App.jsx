@@ -7,7 +7,7 @@ import Login from './pages/Login'
 import { Routes, Route } from 'react-router-dom'
 import RoomDetail from './pages/RoomDetail'
 import Dashboard from './pages/Dashboard'
-import Profile from './pages/profile'
+import Profile from './pages/Profile'
 
 function App() {
   
