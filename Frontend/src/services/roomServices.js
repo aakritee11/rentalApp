@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/rooms";
+const API = import.meta.env.PROD 
+  ? "https://rentalapp-backend.onrender.com"
+  : "http://localhost:5000";
 
 export const deleteRoom = async (roomId, token) => {
   const response = await axios.delete(`${API}/${roomId}`, {
