@@ -33,6 +33,7 @@
 .detail-info h2 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
+  
 }
 
 .detail-city {
@@ -334,7 +335,28 @@
     flex-direction: column;
     gap: 1rem;
   }
+  .detail-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+}
+.detail-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: whitesmoke;
+}
 
+  .detail-city {
+  color:#666 ;
+  margin-bottom: 0.5rem;
+}
+
+.detail-description {
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
   .owner-actions {
     width: 100%;
     display: flex;
@@ -389,3 +411,4 @@
   color: #666;
   font-size: 0.9rem;
 }
+
