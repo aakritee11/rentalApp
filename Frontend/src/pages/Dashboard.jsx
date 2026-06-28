@@ -3,6 +3,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import '../styles/Dashboard.css';
 import { deleteRoom } from "../services/roomServices";
+import server from "../environment.js"
 
 
 
@@ -60,7 +61,7 @@ useEffect(() => {
 
   const fetchMyRooms = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/rooms', {
+      const response = await axios.get(`${server}/api/rooms`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // filter only this owner's rooms
@@ -75,7 +76,7 @@ useEffect(() => {
 
   const fetchRoomData = async (roomId)=>{
     try{
-      const {data} = await axios.get(`http://localhost:5000/api/rooms/${roomId}`);
+      const {data} = await axios.get(`${server}api/rooms/${roomId}`);
       setRoom(data);
     }
     catch (err){
@@ -86,7 +87,7 @@ useEffect(() => {
 const fetchInquiriesForRoom = async (roomId) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:5000/api/inquiries/${roomId}`,
+      `${server}/api/inquiries/${roomId}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     setInquiries(prev => ({ ...prev, [roomId]: data }));
@@ -102,7 +103,7 @@ const fetchInquiriesForRoom = async (roomId) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/rooms', formData, {
+      await axios.post(`${server}/api/rooms`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess('Room posted successfully!');
@@ -147,7 +148,7 @@ const fetchInquiriesForRoom = async (roomId) => {
     for (const file of files) {
       const data = new FormData();
       data.append('photo', file);
-      const res = await axios.post('http://localhost:5000/api/upload', data, {
+      const res = await axios.post(`${server}/api/upload`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -201,7 +202,7 @@ useEffect(() => {
     e.preventDefault();
     setEditLoading(true);
     try {
-      await axios.put(`http://localhost:5000/api/rooms/${roomId}`, editFormData, {
+      await axios.put(`${server}api/rooms/${roomId}`, editFormData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess('Room updated successfully!');

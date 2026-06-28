@@ -3,6 +3,7 @@ import { useParams, useNavigate,  } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/RoomDetail.css';
 import { deleteRoom } from '../services/roomServices';
+import server from '../environment';
 
 function RoomDetail() {
   const { id } = useParams();
@@ -26,7 +27,7 @@ function RoomDetail() {
 
   const fetchRoom = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/rooms/${id}`);
+      const response = await axios.get(`${server}/api/rooms/${id}`);
       setRoom(response.data);
         setEditFormData({
         title: response.data.title,
@@ -80,7 +81,7 @@ const handleInterest = async () => {
   }
 
   try {
-    await axios.post('http://localhost:5000/api/inquiries', 
+    await axios.post(`${server}/api/inquiries`, 
       { roomId: id, message: '' },
       { headers: { Authorization: `Bearer ${token}` } }
     );

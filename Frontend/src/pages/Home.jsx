@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import RoomCard from "../components/RoomCard";
 import '../styles/Home.css';
 import ClearIcon from '@mui/icons-material/Clear';
+import server from "../environment";
 
 export default function Home(){
 
@@ -17,7 +18,7 @@ export default function Home(){
 
      const fetchRooms = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/rooms');
+      const response = await axios.get(`${server}/api/rooms`);
       setRooms(response.data);
     } catch (err) {
       console.log(err);
@@ -32,7 +33,7 @@ export default function Home(){
 
     const handleSearch = async()=>{
       try{
-        const response = await axios.get("http://localhost:5000/api/rooms",{
+        const response = await axios.get(`${server}/api/rooms`,{
           params: {city: search, type: type}
         });
         setRooms(response.data);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import{Link, useNavigate } from "react-router-dom";
 import '../styles/Register.css';
 import axios from "axios";
+import server from "../environment";
 
 
 export default function Register(){
@@ -45,7 +46,7 @@ const handleSubmit = async(e)=>{
     }
 
     try{
-         await axios.post('http://localhost:5000/api/auth/register',formData);
+         await axios.post(`${server}/api/auth/register`,formData);
          navigate('/login');
     }catch (e){
         console.log(e);

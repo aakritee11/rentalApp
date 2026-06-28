@@ -1,11 +1,9 @@
 import axios from "axios";
+import server from "../environment";
 
-const API = import.meta.env.PROD 
-  ? "https://rentalapp-l7zy.onrender.com"
-  : "http://localhost:5000";
 
 export const deleteRoom = async (roomId, token) => {
-  const response = await axios.delete(`${API}/${roomId}`, {
+  const response = await axios.delete(`${server}/${roomId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

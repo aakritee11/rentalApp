@@ -3,6 +3,7 @@ import {Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import '../styles/Register.css';
 import axios from "axios";
+import server from "../environment.js";
 
 
 export default function Login (){
@@ -23,7 +24,7 @@ export default function Login (){
     const handleSubmit = async (e)=>{
       e.preventDefault();
       try{
-       const response= await axios.post('http://localhost:5000/api/auth/login', formData)
+       const response= await axios.post(`${server}/api/auth/login`, formData)
       //  console.log(response.data.token);
        const data = await response.data;
 
