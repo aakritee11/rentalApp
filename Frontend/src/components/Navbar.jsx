@@ -32,10 +32,11 @@ const closeMenu = ()=>{
         position: 'relative'
       }}>
         
-          <div>
+          <div className="logo">
            <Link  to='/' style={{color:'white', fontSize:'1.5rem', fontWeight:'bold', textDecoration:'none'}}>
            RentNepal
            </Link>
+           <p>Skip the Broker, Find Home</p>
           </div>
          <button className="hamburger-btn"
          onClick={()=> setIsOpen(!isOpen)}
