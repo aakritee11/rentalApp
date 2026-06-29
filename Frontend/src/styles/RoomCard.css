@@ -47,7 +47,13 @@
 
 .room-price {
   font-weight: bold;
-  color: white;
+  color: rgb(16, 10, 66);
   margin-top: 0.5rem;
   font-size: 1.1rem;
+}
+
+@media(max-width: 768px){
+   .room-price {
+  color: white;
+}
 }
