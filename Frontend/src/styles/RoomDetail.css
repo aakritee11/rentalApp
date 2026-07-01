@@ -338,17 +338,17 @@
   .detail-price {
   font-size: 1.5rem;
   font-weight: bold;
-  color: white;
+  color:rgb(16, 10, 66);
   margin-bottom: 1rem;
 }
 .detail-info h2 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  color: whitesmoke;
+  color: rgb(16, 10, 66);
 }
 
   .detail-city {
-  color:#666 ;
+  color:rgb(16, 10, 66);;
   margin-bottom: 0.5rem;
 }
 
