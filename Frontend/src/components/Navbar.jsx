@@ -33,7 +33,7 @@ const closeMenu = ()=>{
       }}>
         
           <div className="logo">
-           <Link  to='/' style={{color:'white', fontSize:'1.5rem', fontWeight:'bold', textDecoration:'none'}}>
+           <Link onClick={()=>window.location.href='/'}  to='/' style={{color:'white', fontSize:'1.5rem', fontWeight:'bold', textDecoration:'none'}}>
            RentNepal
            </Link>
            <p>Skip the Broker, Find Home</p>

@@ -72,6 +72,16 @@
   background-color: #2a2a4e;
 }
 
+.btn-cancel {
+  background-color: #ccc;
+  color: #333;
+  margin-left: 0.5rem;
+}
+
+.btn-cancel:hover {
+  background-color: #bbb;
+}
+
 .my-rooms h3 {
   margin-bottom: 1rem;
 }
@@ -171,3 +181,134 @@
   flex-shrink: 0;
 }
 .uploading-text { font-size: 13px; color: #888; margin-top: 6px; }
+
+/* ---- Edit modal ---- */
+.edit-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ---- Inquiries ---- */
+.inquiry-section {
+  margin-bottom: 1.5rem;
+}
+
+.inquiry-card {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  background: white;
+}
+
+.inquiry-card .status {
+  color: #1a1a2e;
+  font-weight: 500;
+}
+
+/* ============ Tablet ============ */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 0 1.25rem;
+  }
+}
+
+/* ============ Mobile ============ */
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 0 1rem;
+    margin: 1rem auto;
+  }
+
+  .dashboard-container h2 {
+    font-size: 1.4rem;
+  }
+
+  .dashboard-form {
+    padding: 1rem;
+  }
+
+  /* stack two-column fields */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  
+  .my-room-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .my-room-actions {
+    width: 100%;
+  }
+
+  .my-room-actions button {
+    flex: 1;
+    text-align: center;
+  }
+
+  .my-room-thumbnail {
+    width: 100%;
+    height: 140px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  /* full-screen modal on mobile instead of centered box */
+  .edit-modal {
+    padding: 0;
+  }
+
+  .modal-content {
+    max-height: 100vh;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  form button {
+    display: block;
+    width: 100%;
+  }
+
+  .btn-cancel {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  .inquiry-card p {
+    font-size: 0.9rem;
+  }
+}
+
+/* ============ Small phones ============ */
+@media (max-width: 400px) {
+  .photo-preview-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  .photo-preview-item {
+    aspect-ratio: unset;
+    height: 80px;
+  }
+}
